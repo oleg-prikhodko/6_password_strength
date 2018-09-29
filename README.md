@@ -11,10 +11,6 @@ Example of script launch on Linux, Python 3.5:
 ```bash
 $ python password_strength.py
 Enter password: supercoolpassword
-No digits
-No special characters
-Not both upper-case and lower-case letters
-Repetetive character
 Password rating: 6
 ```
 

@@ -19,41 +19,22 @@ def get_password_strength(password):
     password_rating = 10
 
     if password in blacklisted_passwords:
-        print("Blacklisted password")
         password_rating = 1
         return password_rating
 
-    if password in words:
-        print("Contains word, abbreviation or name")
-
-    if len(password) < 8:
-        password_rating -= 1
-        print("Too short")
-
-    if re.search(r"\d", password) is None:
-        password_rating -= 1
-        print("No digits")
-
-    if re.search(r"[^\w]", password) is None:
-        password_rating -= 1
-        print("No special characters")
-
-    if password.islower() or password.isupper():
-        password_rating -= 1
-        print("Not both upper-case and lower-case letters")
-
-    if re.search(r"(.)\1", password):
-        password_rating -= 1
-        print("Repetetive character")
-
-    if re.search(r"\d{2,3}?-?\d{2}-?\d{2,4}?", password):
-        password_rating -= 1
-        print("Looks like a date or a phone number")
-
-    if re.search(r"[a-zA-Z]{1}\d{3}[a-zA-Z]{2}", password):
-        password_rating -= 1
-        print("Looks like a plate number")
-
+    password_strength_criteria = [
+        password in words,  # contains a word, abbreviation or name
+        len(password) < 8,  # too short
+        re.search(r"\d", password) is None,  # no digits
+        re.search(r"[^\w]", password) is None,  # no special characters
+        password.islower() or password.isupper(),  # uppercase/lowercase only
+        re.search(r"(.)\1", password) is not None,  # character repetition
+        re.search(r"\d{2,3}?-?\d{2}-?\d{2,4}?", password)
+        is not None,  # phone number or date
+        re.search(r"[a-zA-Z]{1}\d{3}[a-zA-Z]{2}", password)
+        is not None,  # plate number
+    ]
+    password_rating -= sum(password_strength_criteria)
     return password_rating
 
 
