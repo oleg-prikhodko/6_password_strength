@@ -1,12 +1,19 @@
+import os.path as path
 import re
 import sys
 
 
 def get_password_strength(password):
-    with open("blacklist.txt") as blacklist_file:
+    blacklist_filepath = path.join(
+        path.dirname(path.abspath(__file__)), "blacklist.txt"
+    )
+    with open(blacklist_filepath) as blacklist_file:
         blacklisted_passwords = [line.strip() for line in blacklist_file]
 
-    with open("words.txt") as words_file:
+    words_filepath = path.join(
+        path.dirname(path.abspath(__file__)), "words.txt"
+    )
+    with open(words_filepath) as words_file:
         words = [line.strip() for line in words_file]
 
     password_rating = 10
@@ -33,7 +40,7 @@ def get_password_strength(password):
 
     if password.islower() or password.isupper():
         password_rating -= 1
-        print("No usage of both upper-case and lower-case letters")
+        print("Not both upper-case and lower-case letters")
 
     if re.search(r"(.)\1", password):
         password_rating -= 1
